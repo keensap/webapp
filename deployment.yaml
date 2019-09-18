@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: webapp
+  name: webapp-netcore-k8s
 spec:
   replicas: 3
   template:

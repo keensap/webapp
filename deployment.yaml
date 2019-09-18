@@ -7,11 +7,11 @@ spec:
   template:
     metadata:
       labels:
-        app: webapp
+        app: webapp-netcore-k8s
     spec:
       containers:
-      - name: webapp
+      - name: webapp-netcore-k8s
         imagePullPolicy: Never
-        image: webapp
+        image: webapp-netcore-k8s
         ports:
         - containerPort: 80

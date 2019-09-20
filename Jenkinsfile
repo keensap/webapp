@@ -9,7 +9,10 @@ node{
             imageTag= readFile('.git/commit-id').trim()
         }
         stage('Docker Build, Push'){
-            sh "docker build -t ${ImageName} ."
+            withDockerRegistry([credentialsId: "${Creds}", url: 'https://index.docker.io/v1/']) {
+                sh "docker build -t ${ImageName} ."
+                sh "docker push ${ImageName}"
+            }
         }
         stage('Deploy on K8s'){
             sh "kubectl create -f deployment.yaml"

@@ -1,4 +1,5 @@
-node{
+pipeline {
+    agent { dockerfile true }
     def Namespace = "default"
     def ImageName = "webapp-v1"
     def Creds = "2dfd9d0d-a300-49ee-aaaf-0a3efcaa5279"
@@ -8,11 +9,8 @@ node{
             sh "git rev-parse --short HEAD > .git/commit-id"
             imageTag= readFile('.git/commit-id').trim()
         }
-        stage('Docker Build, Push'){
-            withDockerRegistry([credentialsId: "${Creds}", url: 'https://index.docker.io/v1/']) {
-                sh "docker build -t ${ImageName} ."
-                sh "docker push ${ImageName}"
-            }
+        stage('Docker Build, Push')
+            sh "docker build -t ${ImageName} ."
         }
         stage('Deploy on K8s'){
             sh "kubectl create -f deployment.yaml"

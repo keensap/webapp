@@ -9,7 +9,7 @@ pipeline {
             sh "git rev-parse --short HEAD > .git/commit-id"
             imageTag= readFile('.git/commit-id').trim()
         }
-        stage('Docker Build, Push')
+        stage('Docker Build, Push'){
             sh "docker build -t ${ImageName} ."
         }
         stage('Deploy on K8s'){

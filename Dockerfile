@@ -7,14 +7,15 @@ RUN dotnet restore
 
 # Copy everything else and build
 COPY . ./
-RUN dotnet publish  -c Release -o out
+RUN dotnet build  -c Release -o out
 
+FROM build AS publish
+RUN dotnet publish -c Release -o /app
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
 WORKDIR /app
-COPY /app/out .
 # COPY --from=build-env /app/out .
-# EXPOSE 80
-# EXPOSE 443
-# COPY --from=publish /app .
+ EXPOSE 80
+ EXPOSE 443
+ COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "webapp.dll"]
